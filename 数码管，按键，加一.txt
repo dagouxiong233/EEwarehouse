@@ -1,0 +1,82 @@
+#include <reg52.h>
+#include <intrins.h>
+#define uchar unsigned char
+#define uint unsigned int
+sbit w1 = P2^4;
+sbit w2 = P2^5;
+sbit w3 = P2^6;
+sbit w4 = P2^7;
+sbit s1 = P1^0;
+uint time_counter;
+uint counter;
+void delay(uint z)
+{
+	int x,y;
+	for(x=z;x>0;x--)
+		for(y=114;y>0;y--);
+}
+
+uchar code smg[]={0Xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90,0x88,0x83,0xc6,0xa1,0x86,0x8e};
+
+void display(uchar i)
+{
+	
+
+	w1=0;
+	w2=0;
+	w3=0;
+	w4=0;
+
+	P0	=	smg[i];
+
+
+
+	
+	
+}
+
+void main()
+{
+	TMOD = 0x01;//¶¨Ê±Æ÷0 ¹¤×÷Ä£Ê½1 16Ä£Ê½¶¨Ê±Æ÷
+	TH0=(65536-46082)/256;
+	TL0=(65536-46082)%256;//¶¨Ê±50ms
+	TR0=1;//Æô¶¯¶¨Ê±Æ÷0
+	while(1)
+	{
+		if(TF0 == 1)
+		{
+			TF0 = 0;
+			TH0 = 0x4b;
+			TL0 = 0xfe;//¶¨Ê±50ms
+			counter++; 
+		}
+		if(counter == 2)//1s
+		{
+			counter =0;
+			
+			
+		}
+		if(time_counter == 16)
+		{
+			
+			time_counter=0;
+		}
+		
+		display(time_counter);
+		
+		if(s1 == 0)
+		{
+			delay(5);
+			if(s1 == 0)
+			{
+				while(s1 == 0);
+			
+		time_counter++;
+			}
+			
+			
+			
+		}
+	
+	}
+}
